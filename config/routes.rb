@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
+  get 'personal_pages/show'
   mount LetterOpenerWeb::Engine, at: "/letter_opener" if Rails.env.development?
   get 'events/index'
   root 'events#index'
@@ -29,12 +30,14 @@ Rails.application.routes.draw do
     resource :all_reads, only: %i[create]
   end
 
+  resources :personal_pages, only: %i[show]
+
   namespace :mypage do
     root 'event_calendars#show'
     resource :event_calendar, only: %i[show]
     resources :notifications, only: %i[index]
     resource :notification_setting, only: %i[show update]
-    resources :profiles, only: %i[show update] do
+    resource :profile, only: %i[show update] do
       resource :avatar, only: %i[destroy], module: :profiles
     end
     resource :password_change, only: %i[show update]
