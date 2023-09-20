@@ -59,7 +59,6 @@
 
   <!-- Card body -->
   <div class="card-body">
-    <%= form_with model: @user, url: mypage_profile_path do |f|  %>
       <div class="d-lg-flex align-items-center justify-content-between">
         <div class="d-flex align-items-center mb-4 mb-lg-0">
           <%= image_tag @user.decorate.avatar, class: 'avatar-xl rounded-circle' %>
@@ -67,16 +66,17 @@
             <h4 class="mb-3"><%= @user.name %></h4>
           </div>
         </div>
-        <div>
-        </div>
       </div>
-    <% end %>
+      <% if current_user.following?(@user) %>
+        <%= link_to "フォローを外す", user_following_path(@user), method: :delete, class: "btn btn-danger" %>
+      <%else%>
+        <%= link_to "フォローする", user_followings_path(@user), method: :post, class: "btn btn-success" %>
+      <%end%>
     <hr class="my-5">
     <div>
       <h4 class="mb-0">Personal Details</h4>
         <div class="mb-3">
           <%= "hobby: #{@user.hobby}" %>
-        </div>
         <div class="mb-3">
           <%= "profile: #{@user.profile}" %>
         </div>
